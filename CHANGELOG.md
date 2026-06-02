@@ -2,6 +2,16 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)（Semantic Versioning）。
 
+## [0.2.0] - 2026-06-02
+
+### Added
+- **Plugin / Marketplace 支持**：仓库现同时是一个 Claude Code plugin + marketplace，可用 `/plugin marketplace add ihugang/offboarding-auditor` + `/plugin install offboarding-auditor@ihugang-skills` 原生安装。新增 `.claude-plugin/plugin.json` 与 `.claude-plugin/marketplace.json`。
+- **`install.sh`**：终端一键安装（`curl … | bash`），支持 `SCOPE=project` 项目级安装。
+- README 顶部加入项目图标 `icon.png`，安装说明重写为 Plugin / 脚本 / 手动 三种方式。
+
+### Changed
+- **目录重构为官方 plugin 布局**：skill 内容从仓库根目录移入 `skills/offboarding-auditor/`（含 `SKILL.md`、`scripts/`、`references/`）。
+
 ## [0.1.0] - 2026-06-02
 
 ### Added

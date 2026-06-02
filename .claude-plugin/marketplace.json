@@ -1,0 +1,26 @@
+{
+  "name": "ihugang-skills",
+  "owner": {
+    "name": "ihugang",
+    "url": "https://github.com/ihugang"
+  },
+  "metadata": {
+    "description": "ihugang's Claude Code skills & plugins."
+  },
+  "plugins": [
+    {
+      "name": "offboarding-auditor",
+      "source": "./",
+      "description": "Audits a departing engineer's code & docs for handover-readiness and bus-factor risk. Bilingual reports (中文 / English).",
+      "version": "0.2.0",
+      "license": "MIT",
+      "keywords": [
+        "offboarding",
+        "handover",
+        "bus-factor",
+        "code-audit",
+        "knowledge-transfer"
+      ]
+    }
+  ]
+}

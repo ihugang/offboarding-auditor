@@ -1,0 +1,18 @@
+{
+  "name": "offboarding-auditor",
+  "description": "Audits a departing engineer's code & docs for handover-readiness and bus-factor risk. Produces a graded report, an inheritability score, and a pre-departure fix-list. Bilingual reports (中文 / English).",
+  "version": "0.2.0",
+  "author": {
+    "name": "ihugang"
+  },
+  "homepage": "https://github.com/ihugang/offboarding-auditor",
+  "repository": "https://github.com/ihugang/offboarding-auditor",
+  "license": "MIT",
+  "keywords": [
+    "offboarding",
+    "handover",
+    "bus-factor",
+    "code-audit",
+    "knowledge-transfer"
+  ]
+}

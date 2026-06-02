@@ -1,5 +1,9 @@
 **English** | [简体中文](README.zh-CN.md)
 
+<p align="center">
+  <img src="icon.png" alt="offboarding-auditor" width="160">
+</p>
+
 # offboarding-auditor
 
 > A Claude Code skill that audits a departing engineer's code & docs to make sure the project can actually be **inherited** by whoever takes over.
@@ -22,58 +26,69 @@ It does not judge whether the code is "well written"; it evaluates whether the c
 Trigger it inside Claude Code (offboarding audit / handover audit / bus factor, etc.), or run the inventory script manually:
 
 ```bash
-bash scripts/inventory.sh <path/to/repo> > inventory.md
+bash skills/offboarding-auditor/scripts/inventory.sh <path/to/repo> > inventory.md
 ```
+
+## Install
+
+This repo is both a **Claude Code plugin** and a **standalone skill**. Pick whichever fits.
+
+### Option A — Plugin (recommended, native install)
+
+Inside Claude Code:
+
+```text
+/plugin marketplace add ihugang/offboarding-auditor
+/plugin install offboarding-auditor@ihugang-skills
+```
+
+Gives you managed updates (`/plugin marketplace update`) and uninstall. The skill is model-invoked; you can also call it explicitly as `/offboarding-auditor:offboarding-auditor`.
+
+### Option B — One-line terminal install
+
+Installs the skill into `~/.claude/skills/` (global). Needs `git`.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ihugang/offboarding-auditor/main/install.sh | bash
+```
+
+Project-scoped install (into `./.claude/skills/`):
+
+```bash
+SCOPE=project bash -c "$(curl -fsSL https://raw.githubusercontent.com/ihugang/offboarding-auditor/main/install.sh)"
+```
+
+### Option C — Manual
+
+A skill is just a folder containing a `SKILL.md`. Copy the skill folder into your skills directory:
+
+```bash
+git clone https://github.com/ihugang/offboarding-auditor.git
+cp -R offboarding-auditor/skills/offboarding-auditor ~/.claude/skills/offboarding-auditor   # global
+# or: cp -R offboarding-auditor/skills/offboarding-auditor .claude/skills/offboarding-auditor  # per-project
+```
+
+### Then
+
+**Start a new Claude Code session** (skills/plugins load at session start, not hot-reloaded) and trigger it in natural language — e.g. "run an offboarding/handover audit on this project", "check this repo's bus factor".
+
+> Self-contained: no build step, no dependencies. `scripts/inventory.sh` needs `bash` + `git`; `rg`/`fd` are optional (falls back to `grep`/`find`).
 
 ## Structure
 
-```
+```text
 .
-├── SKILL.md                         # Main instructions: methodology, 10 dimensions, scoring, report templates (zh/en)
-├── scripts/inventory.sh             # Phase 1 auto-inventory (bash + git; rg/fd optional)
-└── references/
-    ├── example-report.zh.md         # Filled-in sample report (Chinese)
-    └── example-report.en.md         # Filled-in sample report (English)
+├── .claude-plugin/
+│   ├── plugin.json                          # Plugin manifest
+│   └── marketplace.json                     # Marketplace catalog (this repo = a 1-plugin marketplace)
+├── install.sh                               # Terminal one-line installer
+└── skills/offboarding-auditor/
+    ├── SKILL.md                             # Main instructions: methodology, 10 dimensions, scoring, report templates (zh/en)
+    ├── scripts/inventory.sh                 # Phase 1 auto-inventory (bash + git; rg/fd optional)
+    └── references/
+        ├── example-report.zh.md             # Filled-in sample report (Chinese)
+        └── example-report.en.md             # Filled-in sample report (English)
 ```
-
-## Install as a Claude Code skill
-
-A skill is just a folder containing a `SKILL.md`. The folder name must match `name: offboarding-auditor` in the frontmatter. You can install it **globally** (available in every project) or **per-project**.
-
-### Option A — Global (all projects)
-
-```bash
-git clone https://github.com/ihugang/offboarding-auditor.git \
-  ~/.claude/skills/offboarding-auditor
-```
-
-Or if you already have the repo locally, copy/symlink it:
-
-```bash
-# copy
-cp -R ./offboarding-auditor ~/.claude/skills/offboarding-auditor
-
-# or symlink (edits to the source apply instantly; needs the source path to stay mounted)
-ln -s "$(pwd)/offboarding-auditor" ~/.claude/skills/offboarding-auditor
-```
-
-### Option B — Per-project (this repo only)
-
-```bash
-git clone https://github.com/ihugang/offboarding-auditor.git \
-  .claude/skills/offboarding-auditor
-```
-
-### Verify & use
-
-```bash
-# the folder should contain SKILL.md at its top level
-ls ~/.claude/skills/offboarding-auditor/SKILL.md
-```
-
-Then **start a new Claude Code session** (skills are loaded at session start, not hot-reloaded) and trigger it in natural language — e.g. "run an offboarding/handover audit on this project", "check this repo's bus factor", or `/offboarding-auditor`.
-
-> The skill is self-contained: no build step, no dependencies. `scripts/inventory.sh` needs `bash` + `git`; `rg`/`fd` are optional (it falls back to `grep`/`find`).
 
 ## License
 
