@@ -1,6 +1,6 @@
 ---
 name: offboarding-auditor
-version: 0.0.1
+version: 0.1.0
 description: 当程序员离职、转岗或交接项目时，审计其负责的代码与文档的「可继承性」——即新人能否在不联系原作者的前提下，独立把项目跑起来、看懂、改动、部署运维并接手未完成的工作。识别随人流失的隐性知识与 Bus Factor 风险，产出分级审计报告、可继承度评分和「离职前待补清单」。触发词：离职审计、交接审计、handover audit、项目继承、知识交接、bus factor、人走前检查。
 ---
 
@@ -27,6 +27,7 @@ description: 当程序员离职、转岗或交接项目时，审计其负责的�
 2. **离职人**：负责人是谁？还能找他几天？（决定「待补清单」是否来得及让他补）
 3. **接手人画像**：替岗的是资深还是新手？同团队还是全新的人？（决定文档要详细到什么程度）
 4. **截止时间**：什么时候必须交接完？
+5. **报告语言**：最终审计报告用**中文**还是**English**？（不主动说明时，跟随用户当前对话语言；记下选择，Phase 4 全程用这一种语言输出报告）
 
 > 关键判断基准始终是「**接手人**」的视角，不是「原作者觉得够清楚了」。
 
@@ -90,7 +91,9 @@ bash scripts/inventory.sh <目标仓库路径> > inventory.md
 
 ## 报告模板
 
-生成报告时，先参照 `references/example-report.md`（一份填好的样板，演示证据颗粒度与待补清单写法），再套用下面的结构：
+> **语言跟随 Phase 0 第 5 项的选择**：用户选中文 → 用下方【中文模板】并参照 `references/example-report.zh.md`；选 English → 用下方【English template】并参照 `references/example-report.en.md`。整份报告（含小标题、表头、判定词）统一用所选语言，不要中英混排。
+
+### 中文模板
 
 ```markdown
 # 项目继承审计报告：<项目名>
@@ -125,6 +128,41 @@ bash scripts/inventory.sh <目标仓库路径> > inventory.md
 <如果文档够好，列出新人该先读哪几个文件；如果不够，这一节本身就是缺口>
 ```
 
+### English template
+
+```markdown
+# Inheritance Audit Report: <project>
+
+- Scope: <repo / path>
+- Departing owner: <name>　｜　Successor profile: <senior / junior>
+- Audit date: <date>
+
+## Verdict
+- **Inheritability score: <0-100> / 100**
+- **Handover verdict: ✅ Safe to hand over / ⚠️ Hand over after fixes / ❌ Not ready**
+- One-liner: <the single biggest risk>
+
+## Blockers 🔴 (handover impossible until resolved)
+- [ ] <issue> — Evidence: <file:line / missing fact> — Fix: <action>
+
+## High 🟠
+- [ ] ...
+
+## Dimension scores
+| Dimension | Score | Key finding |
+|-----------|-------|-------------|
+| Runnability | x/10 | ... |
+| ...(10 dimensions)| | |
+
+## Pre-departure fix-list (by priority)
+| Priority | Item | Risk addressed | Owner | Est. effort |
+|----------|------|----------------|-------|-------------|
+| 🔴 | ... | ... | departing eng | 2h |
+
+## "First 30 minutes" entry point for the successor
+<If docs are good enough, list which files to read first; if not, this section is itself the gap>
+```
+
 ## 核心原则
 
 1. **以接手人视角判断**，不是以原作者「我觉得够清楚」判断。
@@ -137,4 +175,5 @@ bash scripts/inventory.sh <目标仓库路径> > inventory.md
 ## 配套资源
 
 - `scripts/inventory.sh` — Phase 1 自动盘点脚本（bash + git，rg/fd 可选）。一键采集 Bus Factor、隐性知识信号、密钥与个人账号风险等客观事实。
-- `references/example-report.md` — 一份填好的样板审计报告，供生成报告时参照风格与证据颗粒度。
+- `references/example-report.zh.md` — 中文样板审计报告，供生成中文报告时参照风格与证据颗粒度。
+- `references/example-report.en.md` — English sample audit report, used as reference when the chosen report language is English.

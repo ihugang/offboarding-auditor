@@ -2,6 +2,16 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)（Semantic Versioning）。
 
+## [0.1.0] - 2026-06-02
+
+### Added
+- 报告支持**中英双语**：Phase 0 新增「报告语言」确认项，最终报告语言由用户开始前的选择决定（不指定时跟随对话语言）。
+- SKILL.md 报告模板拆为【中文模板】+【English template】两套。
+- 新增 `references/example-report.en.md`（英文样板报告）。
+
+### Changed
+- `references/example-report.md` 重命名为 `references/example-report.zh.md`（与英文版命名对齐）。
+
 ## [0.0.1] - 2026-06-02
 
 首版（initial release）。
