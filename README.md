@@ -29,14 +29,51 @@ bash scripts/inventory.sh <path/to/repo> > inventory.md
 
 ```
 .
-├── SKILL.md                      # Main instructions: methodology, 10 dimensions, scoring, report template
-├── scripts/inventory.sh          # Phase 1 auto-inventory (bash + git; rg/fd optional)
-└── references/example-report.md  # A filled-in sample audit report
+├── SKILL.md                         # Main instructions: methodology, 10 dimensions, scoring, report templates (zh/en)
+├── scripts/inventory.sh             # Phase 1 auto-inventory (bash + git; rg/fd optional)
+└── references/
+    ├── example-report.zh.md         # Filled-in sample report (Chinese)
+    └── example-report.en.md         # Filled-in sample report (English)
 ```
 
 ## Install as a Claude Code skill
 
-Place this repo under Claude's skills directory (name the folder to match `name: offboarding-auditor` in `SKILL.md`).
+A skill is just a folder containing a `SKILL.md`. The folder name must match `name: offboarding-auditor` in the frontmatter. You can install it **globally** (available in every project) or **per-project**.
+
+### Option A — Global (all projects)
+
+```bash
+git clone https://github.com/ihugang/offboarding-auditor.git \
+  ~/.claude/skills/offboarding-auditor
+```
+
+Or if you already have the repo locally, copy/symlink it:
+
+```bash
+# copy
+cp -R ./offboarding-auditor ~/.claude/skills/offboarding-auditor
+
+# or symlink (edits to the source apply instantly; needs the source path to stay mounted)
+ln -s "$(pwd)/offboarding-auditor" ~/.claude/skills/offboarding-auditor
+```
+
+### Option B — Per-project (this repo only)
+
+```bash
+git clone https://github.com/ihugang/offboarding-auditor.git \
+  .claude/skills/offboarding-auditor
+```
+
+### Verify & use
+
+```bash
+# the folder should contain SKILL.md at its top level
+ls ~/.claude/skills/offboarding-auditor/SKILL.md
+```
+
+Then **start a new Claude Code session** (skills are loaded at session start, not hot-reloaded) and trigger it in natural language — e.g. "run an offboarding/handover audit on this project", "check this repo's bus factor", or `/offboarding-auditor`.
+
+> The skill is self-contained: no build step, no dependencies. `scripts/inventory.sh` needs `bash` + `git`; `rg`/`fd` are optional (it falls back to `grep`/`find`).
 
 ## License
 

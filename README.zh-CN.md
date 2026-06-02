@@ -29,14 +29,51 @@ bash scripts/inventory.sh <目标仓库路径> > inventory.md
 
 ```
 .
-├── SKILL.md                      # 主指令：方法论、10 维度、评分、报告模板
-├── scripts/inventory.sh          # Phase 1 自动盘点（bash + git；rg/fd 可选）
-└── references/example-report.md  # 一份填好的样板审计报告
+├── SKILL.md                         # 主指令：方法论、10 维度、评分、中英报告模板
+├── scripts/inventory.sh             # Phase 1 自动盘点（bash + git；rg/fd 可选）
+└── references/
+    ├── example-report.zh.md         # 样板报告（中文）
+    └── example-report.en.md         # 样板报告（英文）
 ```
 
 ## 安装为 Claude Code skill
 
-把本仓库放到 Claude 的 skills 目录下即可（目录名建议与 `SKILL.md` 中的 `name: offboarding-auditor` 一致）。
+一个 skill 就是一个含有 `SKILL.md` 的文件夹，文件夹名要与 frontmatter 里的 `name: offboarding-auditor` 一致。可以装成**全局**（所有项目可用）或**项目级**。
+
+### 方式 A — 全局（所有项目）
+
+```bash
+git clone https://github.com/ihugang/offboarding-auditor.git \
+  ~/.claude/skills/offboarding-auditor
+```
+
+或者本地已有仓库，复制 / 软链接过去：
+
+```bash
+# 复制
+cp -R ./offboarding-auditor ~/.claude/skills/offboarding-auditor
+
+# 或软链接（改源码即时生效；需保证源码路径始终挂载可用）
+ln -s "$(pwd)/offboarding-auditor" ~/.claude/skills/offboarding-auditor
+```
+
+### 方式 B — 项目级（仅当前仓库）
+
+```bash
+git clone https://github.com/ihugang/offboarding-auditor.git \
+  .claude/skills/offboarding-auditor
+```
+
+### 验证与使用
+
+```bash
+# 文件夹顶层应有 SKILL.md
+ls ~/.claude/skills/offboarding-auditor/SKILL.md
+```
+
+然后**新开一个 Claude Code 会话**（skill 在会话启动时加载，不热更新），用自然语言触发——比如「对这个项目做离职/交接审计」「看下这个仓库的 bus factor」，或直接 `/offboarding-auditor`。
+
+> 本 skill 自包含：无需构建、无依赖。`scripts/inventory.sh` 需要 `bash` + `git`；`rg` / `fd` 可选（缺了自动回退 `grep` / `find`）。
 
 ## 许可证
 
